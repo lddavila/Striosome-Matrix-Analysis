@@ -31,6 +31,15 @@ for i=1:5
     opts = fitoptions( 'Method', 'NonlinearLeastSquares');
     opts.Display = 'Off';
 
+    if height(xmean_matrix) <3
+        slope = 0;
+        significance=100;
+        goodnessOfFit = -500;
+        fig_handle = gcf;
+        disp("There was not enough data to fit")
+        continue
+    end
+
     [fitobj_matrix, gof_matrix] = fit(xmean_matrix, ynew_matrix, fitType);
     
     slope=fitobj_matrix.a; 
@@ -65,6 +74,16 @@ end
 %striosome neurons
 [xmean_matrix, ynew_matrix] = y_mean(all_striosome_counts, all_msnmatrix_counts);
 
+%check to make sure there's actually enough data to fit
+%if not return values that make no sense
+if height(xmean_matrix) <3
+    slope = 0;
+    significance=100;
+    goodnessOfFit = -500;
+    fig_handle = gcf;
+    disp("There was not enough data to fit")
+    return
+end
 
 % Start Fitting to linear line and get rsquare error
 fitType = fittype('a*x+b', 'independent', 'x', 'dependent', 'y');

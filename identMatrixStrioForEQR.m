@@ -1,6 +1,5 @@
 workingDIR = cd('C:\Users\ldd77\Downloads\Cell Figures and Data\Functions\TWDB Functions\Extracting Data From TWDB');
 extractingData = cd(workingDIR);
-currentDatabase = twdb_stress;
     for currentTaskType=1:height(uniqueTaskType)
         newDir = strcat("Line ","Task Type ",string(uniqueTaskType(currentTaskType)));
         mkdir(newDir)
@@ -49,7 +48,6 @@ currentDatabase = twdb_stress;
         currentIndex=1;
         striosome_bin_time = 1;
         while currentIndex <= height(striosome_matrix_pairs)
-            try
                figure 
                spikes_strio=currentDataBase(striosome_matrix_pairs(currentIndex,1)).trial_spikes;
                spikes_matrix=currentDataBase(striosome_matrix_pairs(currentIndex,2)).trial_spikes;
@@ -65,34 +63,38 @@ currentDatabase = twdb_stress;
     %            thename = strcat(pwd,thename);
                subtitle(thename)
 %                display(thename)
-                   try
-                       mkdir("Positive Slope")
-                       mkdir("Negative Slope")
-                       if slope>0
-                           cd("Positive Slope");
-                           saveas(given_fig,thename)
-                       elseif slope<0
-                           cd("Negative Slope");
-                           saveas(given_fig,thename)
-                       end
-                   catch
-                      if slope>0
-                           cd("Positive Slope");
-                           saveas(given_fig,thename)
-                       elseif slope<0
-                           cd("Negative Slope");
-                           saveas(given_fig,thename)
-                      end
-                    
-                   end 
+            try
+                mkdir("Positive Slope")
+                mkdir("Negative Slope")
+                if slope>0
+                    cd("Positive Slope");
+                    saveas(given_fig,thename)
+                    disp(strcat("Succeeded In Analyzing Pair: ", string(currentIndex)));
+                elseif slope<0
+                    cd("Negative Slope");
+                    saveas(given_fig,thename)
+                    disp(strcat("Succeeded In Analyzing Pair: ", string(currentIndex)));
+                elseif significance ==100
+                    disp(strcat("Failed in Analyzing Pair: ",string(currentIndex)));
+                end
+            catch
+                if slope>0
+                    cd("Positive Slope");
+                    saveas(given_fig,thename)
+                    disp(strcat("Succeeded In Analyzing Pair: ", string(currentIndex)));
+                elseif slope<0
+                    cd("Negative Slope");
+                    saveas(given_fig,thename)
+                    disp(strcat("Succeeded In Analyzing Pair: ", string(currentIndex)));
+                elseif significance==100
+                    disp(strcat("Failed in Analyzing Pair: ",string(currentIndex)));
+                end
+
+            end
 %                pause(20)
                    currentIndex=currentIndex+1; 
                    close(given_fig)
                    cd(currentDir)
-            catch
-                close all
-                currentIndex=currentIndex+1;
-            end
 
     
         

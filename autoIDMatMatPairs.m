@@ -5,7 +5,6 @@
 
 workingDIR = cd('Extracting Data From TWDB');
 extractingData = cd(workingDIR);
-currentDataBase = twdb_control;
 
 %cycle through all the concentrations and task types in the current
 %database
@@ -17,12 +16,18 @@ for currentConcentration=1:length(uniqueConcentrations)
         mkdir(newDir)
         cd(extractingData)
         
-        %look up matrix neurons in the current database
+%         look up matrix neurons in the current database
         matrix_ids = twdb_lookup(currentDataBase, 'index', 'key', 'tetrodeType', 'dms', ...
             'grade', 'removable', 0, 0, 'grade', 'striosomality2_type', 0, 1, ...
             'grade', 'final_michael_grade', 0, 5, 'key', 'neuron_type', 'MSN',...
             'key','taskType',uniqueTaskType{currentTaskType},...
             'key','conc',uniqueConcentrations(currentConcentration));
+% 
+%         matrix_ids = twdb_lookup(currentDataBase, 'index', 'key', 'tetrodeType', 'dms', ...
+%             'grade', 'removable', 0, 0, 'grade', 'striosomality2_type', 3, 5, ...
+%             'grade', 'final_michael_grade', 0, 5, 'key','neuron_type',"MSN",...
+%             'key','taskType',uniqueTaskType{currentTaskType},...
+%             'key','conc',uniqueConcentrations(currentConcentration));
 
         
         %identify matrix-matrix pairs 
@@ -38,14 +43,16 @@ for currentConcentration=1:length(uniqueConcentrations)
             session = currentData.sessionID;
             rat = currentData.ratID;
             tetrodeN = currentData.tetrodeN;
-            for matrix2_counter = matrix1_counter+1: length(matrix_ids)
-                matrix2_index = matrix_ids(matrix2_counter);
+            %find potentially up to 10 potential non paired matrix-matrix
+            %matches
+            for matrix2_counter = matrix1_counter+1: 10
+                matrix2_index = matrix_ids(randi(length(matrix_ids)));
                 matrix2_index = str2double(matrix2_index);
                 matrix2_data = currentDataBase(matrix2_index);
                 matrix2_session = matrix2_data.sessionID;
                 matrix2_rat = matrix2_data.ratID;
                 striosome_tetrode=matrix2_data.tetrodeN;
-                if strcmp(matrix2_rat,rat) && strcmp(matrix2_session,session) %&& strcmp(tetrodeN,striosome_tetrode)
+                if strcmp(matrix2_rat,rat) && ~strcmp(matrix2_session,session) %&& strcmp(tetrodeN,striosome_tetrode)
                     matrix_indexes = [matrix_indexes;matrix1_index];
                     matrix2_indexes = [matrix2_indexes;matrix2_index];
                 end
@@ -58,7 +65,7 @@ for currentConcentration=1:length(uniqueConcentrations)
         %Now call mat_mat_plot_dynamics.m for each pair 
         %save the created figure into the appropriate folder depending on
         %the figure's slope
-        currentIndex=70;
+        currentIndex=1;
         striosome_bin_time = 1;
         while currentIndex <= height(matrix_matrix_pairs)
 %             try
@@ -83,20 +90,30 @@ for currentConcentration=1:length(uniqueConcentrations)
                        mkdir("Negative Slope")
                        if slope>0
                            cd("Positive Slope");
+                           saveas(given_fig,thename)
+                           disp(strcat("Succeeded In Analyzing Pair: ", string(currentIndex)));
                        elseif slope<0
                            cd("Negative Slope");
+                           saveas(given_fig,thename)
+                           disp(strcat("Succeeded In Analyzing Pair: ", string(currentIndex)));
+                       elseif significance ==100
+                           disp(strcat("Failed in Analyzing Pair: ",string(currentIndex)));
                        end
                    catch
                       if slope>0
                            cd("Positive Slope");
+                           saveas(given_fig,thename)
+                           disp(strcat("Succeeded In Analyzing Pair: ", string(currentIndex)));
                        elseif slope<0
                            cd("Negative Slope");
+                           saveas(given_fig,thename)
+                           disp(strcat("Succeeded In Analyzing Pair: ", string(currentIndex)));
+                       elseif significance ==100
+                           disp(strcat("Failed in Analyzing Pair: ",string(currentIndex)));
                       end
                     
                    end 
 %                pause(20)
-                   saveas(given_fig,thename)
-                   disp(strcat("Succeeded In Analyzing Pair: ", string(currentIndex)));
                    currentIndex=currentIndex+1; 
                    close(given_fig)
                    cd(currentDir)

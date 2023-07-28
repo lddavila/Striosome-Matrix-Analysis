@@ -1,4 +1,10 @@
-
+function[tableOfAll] = formatCountsAsTable(satisfactoryRsquaredCount,...
+    satisfactorySignificance,...
+    totalFiguresCount,...
+    totalNegativeFiguresCount,...
+    totalPositiveFiguresCount,...
+    totalPositiveRSquaredSatisfactory,...
+    totalPositiveSignificance)
 %this file takes the counts created in countingEverything.m and turns
 %formats it into a table for easy reading
 
@@ -21,14 +27,7 @@ totalPositivePercentage = totalPositiveFigures./totalFigures;
 % totalPositivePercentage = totalPositivePercentage(:,8);
 PositiveThresholdMeetingPercentage = totalPositiveThatMeetRSquaredThreshold ./ totalFigures;
 
-%the orders listed below are found manually, and just serve to arrange the
-%table in ascending order by concentration and task type
-order=[2;1; 3; 4; 5; 7; 8; 6; 9; 18; 11; 12; 13; 10; 14; 15; 16; 17]; %control group order
-% order = [1;2;11;3;4;5;6;7;8;9;10]; %stress order
-% order = [1;2;3;4;7;5;6]; %stress 2 order
-tableOfAll = table(order,taskAndConcentration,totalFigures,totalNegativePercentage,NegativeThresholdMeetingPercentage,totalPositivePercentage,PositiveThresholdMeetingPercentage);
+
+tableOfAll = table(taskAndConcentration,totalFigures,totalNegativePercentage,NegativeThresholdMeetingPercentage,totalPositivePercentage,PositiveThresholdMeetingPercentage);
 display(tableOfAll)
-
-sortedTable = sortrows(tableOfAll);
-display(sortedTable);
-
+end
