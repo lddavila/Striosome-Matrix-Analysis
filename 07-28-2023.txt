@@ -1,0 +1,22 @@
+-Granger Causality can be used to measure if two time series are related to each other by detecting correlation
+-granger causality has nothing to do with patterns
+-first pattern is spikes going up
+-other pattens include spikes going down
+-he created distributions of these patterns
+-if you're in the right percentile 
+
+-the question is what we call excitation and what we call inhibition
+-We need to identify what we call slow and what we call fast
+-Once you determine what thresholds you want to use then you can start pattern analysis
+-Keep in mind that different types of neurons can have different thresholds
+-for example striosomes may have a higher threshold then matrix neurons
+-sometimes differences may be very minor
+-
+
+eyesight distribution, log, PLS striosome FSI, pattern analysis 
+
+-Send to paulina
+-perfect downward correlation
+-perfect flat correlation
+-send histogram of 15%
+-send histogram of 70%

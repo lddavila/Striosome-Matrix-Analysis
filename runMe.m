@@ -24,46 +24,46 @@ uniqueConcentrations = unique(t.conc);
 uniqueConcentrations = rmmissing(uniqueConcentrations);
 uniqueTaskType = unique(t.taskType);
 
-createTables(currentDatabase,1,"Paired Matrix Striosome Control",1,uniqueTaskType,uniqueConcentrations,1,0)
-createTables(currentDatabase,1,"Unpaired Matrix Striosome Control",0,uniqueTaskType,uniqueConcentrations,1,0)
-
-createTables(currentDatabase,2,"Paired Matrix Matrix Control",1,uniqueTaskType,uniqueConcentrations,1,0)
-createTables(currentDatabase,2,"Unpaired Matrix Matrix Control",0,uniqueTaskType,uniqueConcentrations,1,0)
-
-
-
-createTables(currentDatabase,3,strcat("Paired Striosome Striosome Control",string(i)),1,uniqueTaskType,uniqueConcentrations,1,0)
-createTables(currentDatabase,3,strcat("Unpaired Striosome Striosome Control",string(i)),0,uniqueTaskType,uniqueConcentrations,1,0)
-
-createTables(currentDatabase,3,"Paired Striosome Striosome Control",1,uniqueTaskType,uniqueConcentrations,1,0)
-createTables(currentDatabase,3,"Unpaired Striosome Striosome Control",0,uniqueTaskType,uniqueConcentrations,1,0)
-
-currentDatabase = twdb_stress;
-t = struct2table(currentDatabase);
-uniqueConcentrations = unique(t.conc);
-uniqueConcentrations = rmmissing(uniqueConcentrations);
-uniqueTaskType = unique(t.taskType);
-
-createTables(currentDatabase,1,"Paired Matrix Striosome StressOne",1,uniqueTaskType,uniqueConcentrations,2,0)
-createTables(currentDatabase,1,"Unpaired Matrix Striosome StressOne",0,uniqueTaskType,uniqueConcentrations,2,0)
-
-createTables(currentDatabase,2,"Paired Matrix Matrix StressOne",1,uniqueTaskType,uniqueConcentrations,2,0)
-createTables(currentDatabase,2,"Unpaired Matrix Matrix StressOne",0,uniqueTaskType,uniqueConcentrations,2,0)
-
-createTables(currentDatabase,3,"Paired Striosome Striosome StressOne",1,uniqueTaskType,uniqueConcentrations,2,0)
-createTables(currentDatabase,3,"Unpaired Striosome Striosome StressOne",0,uniqueTaskType,uniqueConcentrations,2,0)
-
-currentDatabase = twdb_stress2;
-t = struct2table(currentDatabase);
-uniqueConcentrations = unique(t.conc);
-uniqueConcentrations = rmmissing(uniqueConcentrations);
-uniqueTaskType = unique(t.taskType);
-
-createTables(currentDatabase,1,"Paired Matrix Striosome StressTwo",1,uniqueTaskType,uniqueConcentrations,3,0)
-createTables(currentDatabase,1,"Unpaired Matrix Striosome StressTwo",0,uniqueTaskType,uniqueConcentrations,3,0)
-
-createTables(currentDatabase,2,"Paired Matrix Matrix StressTwo",1,uniqueTaskType,uniqueConcentrations,3,0)
-createTables(currentDatabase,2,"Unpaired Matrix Matrix StressTwo",0,uniqueTaskType,uniqueConcentrations,3,0)
-
-createTables(currentDatabase,3,"Paired Striosome Striosome StressTwo",1,uniqueTaskType,uniqueConcentrations,3,0)
-createTables(currentDatabase,3,"Unpaired Striosome Striosome StressTwo",0,uniqueTaskType,uniqueConcentrations,3,0)
+createTables(currentDatabase,1,"Paired Matrix Striosome Control",1,uniqueTaskType,uniqueConcentrations,1,1)
+% createTables(currentDatabase,1,"Unpaired Matrix Striosome Control",0,uniqueTaskType,uniqueConcentrations,1,0)
+% 
+% createTables(currentDatabase,2,"Paired Matrix Matrix Control",1,uniqueTaskType,uniqueConcentrations,1,0)
+% createTables(currentDatabase,2,"Unpaired Matrix Matrix Control",0,uniqueTaskType,uniqueConcentrations,1,0)
+% 
+% 
+% 
+% createTables(currentDatabase,3,strcat("Paired Striosome Striosome Control",string(i)),1,uniqueTaskType,uniqueConcentrations,1,0)
+% createTables(currentDatabase,3,strcat("Unpaired Striosome Striosome Control",string(i)),0,uniqueTaskType,uniqueConcentrations,1,0)
+% 
+% createTables(currentDatabase,3,"Paired Striosome Striosome Control",1,uniqueTaskType,uniqueConcentrations,1,0)
+% createTables(currentDatabase,3,"Unpaired Striosome Striosome Control",0,uniqueTaskType,uniqueConcentrations,1,0)
+% 
+% currentDatabase = twdb_stress;
+% t = struct2table(currentDatabase);
+% uniqueConcentrations = unique(t.conc);
+% uniqueConcentrations = rmmissing(uniqueConcentrations);
+% uniqueTaskType = unique(t.taskType);
+% 
+% createTables(currentDatabase,1,"Paired Matrix Striosome StressOne",1,uniqueTaskType,uniqueConcentrations,2,0)
+% createTables(currentDatabase,1,"Unpaired Matrix Striosome StressOne",0,uniqueTaskType,uniqueConcentrations,2,0)
+% 
+% createTables(currentDatabase,2,"Paired Matrix Matrix StressOne",1,uniqueTaskType,uniqueConcentrations,2,0)
+% createTables(currentDatabase,2,"Unpaired Matrix Matrix StressOne",0,uniqueTaskType,uniqueConcentrations,2,0)
+% 
+% createTables(currentDatabase,3,"Paired Striosome Striosome StressOne",1,uniqueTaskType,uniqueConcentrations,2,0)
+% createTables(currentDatabase,3,"Unpaired Striosome Striosome StressOne",0,uniqueTaskType,uniqueConcentrations,2,0)
+% 
+% currentDatabase = twdb_stress2;
+% t = struct2table(currentDatabase);
+% uniqueConcentrations = unique(t.conc);
+% uniqueConcentrations = rmmissing(uniqueConcentrations);
+% uniqueTaskType = unique(t.taskType);
+% 
+% createTables(currentDatabase,1,"Paired Matrix Striosome StressTwo",1,uniqueTaskType,uniqueConcentrations,3,0)
+% createTables(currentDatabase,1,"Unpaired Matrix Striosome StressTwo",0,uniqueTaskType,uniqueConcentrations,3,0)
+% 
+% createTables(currentDatabase,2,"Paired Matrix Matrix StressTwo",1,uniqueTaskType,uniqueConcentrations,3,0)
+% createTables(currentDatabase,2,"Unpaired Matrix Matrix StressTwo",0,uniqueTaskType,uniqueConcentrations,3,0)
+% 
+% createTables(currentDatabase,3,"Paired Striosome Striosome StressTwo",1,uniqueTaskType,uniqueConcentrations,3,0)
+% createTables(currentDatabase,3,"Unpaired Striosome Striosome StressTwo",0,uniqueTaskType,uniqueConcentrations,3,0)
