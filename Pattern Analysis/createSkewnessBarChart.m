@@ -1,10 +1,11 @@
 %% load databases
 [dbs,twdbs] = loadData;
+
 %% Create Skewness table
-binSize = 1;
+binSize = 100;
 allTaskTypesAndConcentrationsPairedWithSkewness = containers.Map('KeyType','char','ValueType','any');
 namesOfDatabases = ["Control", "Stress 1","Stress 2"];
-for i=1:1.5%length(twdbs)
+for i=3:3.5%length(twdbs)
     currentDatabase = twdbs{i};
     t = struct2table(currentDatabase);
     uniqueTaskType = unique(t.taskType);
@@ -90,4 +91,5 @@ x = reordercats(x,sortedTableOfSkews.task_type_and_concentration);
 y = sortedTableOfSkews.skews;
 bar(x,y)
 title(strcat(namesOfDatabases(i)," Skewness by Concentration and Task Type"))
+subtitle("Created by createSkewnessBarChart.m")
 

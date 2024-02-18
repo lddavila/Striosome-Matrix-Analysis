@@ -1,14 +1,27 @@
-%% load databases
-[dbs,twdbs] = loadData;
+function [sortedTableOfSkews] = createSkewnessBarChart(binSize, twdbs,databaseYouWantToSee)
 %% Create Skewness table
-binSize = 100;
 allTaskTypesAndConcentrationsPairedWithSkewness = containers.Map('KeyType','char','ValueType','any');
 namesOfDatabases = ["Control", "Stress 1","Stress 2"];
-for i=1:1.5%length(twdbs)
+
+switch strrep(lower(databaseYouWantToSee),' ','')
+    case "control"
+        beginning = 1;
+        ending = 1.5;
+    case "stress"
+        beginning = 2;
+        ending = 2.5;
+    case "stress1"
+        beginning = 2;
+        ending = 2.5;
+    case "stress2"
+        beginning = 3;
+        ending = 3.5;
+end
+for i=beginning:ending%length(twdbs)
     currentDatabase = twdbs{i};
     t = struct2table(currentDatabase);
     uniqueTaskType = unique(t.taskType);
-%     uniqueTaskType = ["TR"];
+    %     uniqueTaskType = ["TR"];
     currentTaskTypes = uniqueTaskType;
     allSkews = [];
     for currentTaskType=1:length(currentTaskTypes)
@@ -18,7 +31,7 @@ for i=1:1.5%length(twdbs)
         disp(strcat("Task Type: ",currentTaskTypes(currentTaskType)))
         disp(strcat("All Concentrations"))
         disp(currentConcentrations.')
-        
+
         if isempty(currentConcentrations)
             concentrationsWithinCurrentBin = [];
         end
@@ -63,10 +76,10 @@ for i=1:1.5%length(twdbs)
             allTaskTypesAndConcentrationsPairedWithSkewness(strcat("Task Type ",string(currentTaskTypes(currentTaskType))," Concentration NA To Na")) =skewness(allCol6InModifedTable);
         end
 
-%         figure
-%         histogram(allCol6InModifedTable)
-%         theSkew = skewness(allCol6InModifedTable);
-%         title(strcat(string(currentTaskTypes(currentTaskType)), string(theSkew)))
+        %         figure
+        %         histogram(allCol6InModifedTable)
+        %         theSkew = skewness(allCol6InModifedTable);
+        %         title(strcat(string(currentTaskTypes(currentTaskType)), string(theSkew)))
     end
 end
 
@@ -92,3 +105,4 @@ bar(x,y)
 title(strcat(namesOfDatabases(i)," Skewness by Concentration and Task Type"))
 subtitle(strcat("Created by createSkewnessBarChart.m Bin Size = ",string(binSize) ))
 
+end

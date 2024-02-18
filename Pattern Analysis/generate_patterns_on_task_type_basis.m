@@ -40,6 +40,7 @@ for currentDB = 1:length(twdbs)
 
 
     for ttCounter = 1:length(uniqueTaskType)
+        allTheFirstStriosomeActivityByTaskType = [];
         currentTaskType = uniqueTaskType{ttCounter};
         disp(strcat("Current Task Type:", currentTaskType))
         tableWithOnlyCurrentTaskType =  t((strcmp(string(t.taskType),string(uniqueTaskType(ttCounter)))),:);
@@ -117,7 +118,10 @@ for currentDB = 1:length(twdbs)
             cd("..\Pattern Analysis")
             [result,pairedLongTrialCounterCurrent,pairedShortTrialCounterCurrent,pairedWeirdlyLongTrialCounterCurrent,...
                 unpairedLongTrialCounterCurrent,unpairedShortTrialCounterCurrent,unpairedWeirdlyLongTrialCounterCurrent,...
-                pairedOrUnpaired,unpairedCountCurr,pairedCountCurr]  = runGrangerCausality(currentPair,currentDatabase,currentDatabasePairs,nlags,currentDB,dbs);
+                pairedOrUnpaired,unpairedCountCurr,pairedCountCurr,array_of_firsts]  = runGrangerCausality(currentPair,currentDatabase,currentDatabasePairs,nlags,currentDB,dbs);
+            %update firstRecordedInstancesOfStrio after pattern is detected
+            allTheFirstStriosomeActivityByTaskType = [allTheFirstStriosomeActivityByTaskType,array_of_firsts];
+            
             % UPDATE THE TOTAL COUNTS
             pairedLongTrialCounter{currentDB}{1} = pairedLongTrialCounter{currentDB}{1} + pairedLongTrialCounterCurrent{currentDB}{1};
             pairedLongTrialCounter{currentDB}{2} = pairedLongTrialCounter{currentDB}{2} + pairedLongTrialCounterCurrent{currentDB}{2};
@@ -258,6 +262,16 @@ for currentDB = 1:length(twdbs)
         saveas(gcf,name)
         hold off
         close all
+    
+        %create histogram of first recorded activity
+        figure;
+        hold on;
+        histogram(allTheFirstStriosomeActivityByTaskType);
+        name = strcat(namesOfDatabases(currentDB), " Histogram of First Activity for ",string(currentTaskType),".fig");
+        saveas(gcf,name);
+        hold off; 
+        close all;
+
     end
 
 

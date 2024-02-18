@@ -4,7 +4,7 @@
 allTaskTypesAndConcentrationsPairedWithSkewness = containers.Map('KeyType','char','ValueType','any');
 allTaskTypesAndConcentrationsPairedWith20thPercentiles = containers.Map('KeyType','char','ValueType','any');
 allTaskTypesAndConcentrationsPairedWith90thPercentiles = containers.Map('KeyType','char','ValueType','any');
-for i=1:1.5%length(twdbs)
+for i=2:2.5%length(twdbs)
     currentDatabase = twdbs{i};
     t = struct2table(currentDatabase);
     uniqueTaskType = unique(t.taskType);
