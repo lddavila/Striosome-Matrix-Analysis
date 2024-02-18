@@ -1,6 +1,6 @@
 function [foundOne,pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialCounter,...
     unpairedLongTrialCounter,unpairedShortTrialCounter,unpairedWeirdlyLongTrialCounter,...
-    pairedOrUnpaired,unpairedCountCurr,pairedCountCurr] = runGrangerCausality(currentPair,currentDatabase,currentDatabasePairs,nlags,currentDB,dbs)
+    pairedOrUnpaired,unpairedCountCurr,pairedCountCurr,array_of_firsts] = runGrangerCausality(currentPair,currentDatabase,currentDatabasePairs,nlags,currentDB,dbs)
 
 foundOne = 0;
 currentNeuronPair = currentDatabasePairs(currentPair,:);
@@ -31,13 +31,13 @@ if (strcmpi(summary.Decision(1),"Reject H0"))
     %this is because of some hard coding in plotBins which may be undone in a later update, but for now this is necessary
     [pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialCounter,...
     unpairedLongTrialCounter,unpairedShortTrialCounter,unpairedWeirdlyLongTrialCounter,...
-    unpairedCountCurr,pairedCountCurr] = plotBins(neuron_2_spikes,neuron_1_spikes,neuron_2_timings,neuron_1_timings,dbs,currentDB,currentPair,neuron_2_index,neuron_1_index,pairedOrUnpaired);
+    unpairedCountCurr,pairedCountCurr,array_of_firsts] = plotBins(neuron_2_spikes,neuron_1_spikes,neuron_2_timings,neuron_1_timings,dbs,currentDB,currentPair,neuron_2_index,neuron_1_index,pairedOrUnpaired);
     foundOne = 1;
 else
     pairedOrUnpaired = 0;
     [pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialCounter,...
     unpairedLongTrialCounter,unpairedShortTrialCounter,unpairedWeirdlyLongTrialCounter,...
-    unpairedCountCurr,pairedCountCurr] = plotBins(neuron_2_spikes,neuron_1_spikes,neuron_2_timings,neuron_1_timings,dbs,currentDB,currentPair,neuron_2_index,neuron_1_index,pairedOrUnpaired);
+    unpairedCountCurr,pairedCountCurr,array_of_firsts] = plotBins(neuron_2_spikes,neuron_1_spikes,neuron_2_timings,neuron_1_timings,dbs,currentDB,currentPair,neuron_2_index,neuron_1_index,pairedOrUnpaired);
     foundOne = 1;
 
 end

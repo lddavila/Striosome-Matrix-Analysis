@@ -1,6 +1,6 @@
 function [pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialCounter,...
     unpairedLongTrialCounter,unpairedShortTrialCounter,unpairedWeirdlyLongTrialCounter,...
-    unpairedShortAndLongCount,pairedShortAndLongCount] = plotBins(neuron_1_spikes,neuron_2_spikes,neuron_1_evt_timings,neuron_2_evt_timings,~,currentDB,currentPair,neuron_1_index,neuron_2_index,pairedOrUnpaired)
+    unpairedShortAndLongCount,pairedShortAndLongCount,array_of_firsts] = plotBins(neuron_1_spikes,neuron_2_spikes,neuron_1_evt_timings,neuron_2_evt_timings,~,currentDB,currentPair,neuron_1_index,neuron_2_index,pairedOrUnpaired)
 %     function [] = createHistogram(all_neuron_1_times,strio_mean,strio_std,all_neuron_2_times,matrix_mean,matrix_std)
 %         stdDvns = [-1,1,-2,2,-3,3];
 %         figure
@@ -66,7 +66,7 @@ function [pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialC
 %     neur_1_inhib_thres,...
 %     neur_2_excit_thres,...
 %     neur_2_inhib_thres] = findThresholds(neuron_1_spikes,neuron_2_spikes);
-    function [eeCounter,eiCounter,ieCounter,iiCounter,nCounter] = countPatterns(strioXB,strioTimings,strioAbovThresh,strioBelowThreshold,matXB,matTimings,matrixAbovThresh,matrixBelowThreshold,...
+    function [eeCounter,eiCounter,ieCounter,iiCounter,nCounter,array_of_firsts] = countPatterns(strioXB,strioTimings,strioAbovThresh,strioBelowThreshold,matXB,matTimings,matrixAbovThresh,matrixBelowThreshold,...
             longBaselineLowerBound,longBaselineUpperBound,immediateBaselineUpperBound,earlyDecisionBinUpperBound,lateDecisionUpperBound,remainingBinUpperBound)
 %% Understanding the inhibition threshold
         %start by taking log10(mean(dist(spikeTimes)))
@@ -92,6 +92,8 @@ function [pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialC
         ieCounter = 0;
         iiCounter = 0;
         nCounter = 0;
+        array_of_firsts = [];
+        foundFirstWindowWherePatternsStart = false;
         %xb is recorded time
         %yb is log10(diff(distance))
         
@@ -173,10 +175,10 @@ function [pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialC
 
             [~,~,matInhibitionSlice,~] = excitationOrInhibition(testmatxb,allMatBins{currentBin},testMatInhibLine);
             %any values that are not NaN in the inhibition slice are inhibition
-            [~,~,strioInhibitionSlice,~] = excitationOrInhibition(teststrioxb,allStrioBins{currentBin},testStrioInhibLine);
+            [~,~,strioInhibitionSlice,~,strio_inh_min] = excitationOrInhibition(teststrioxb,allStrioBins{currentBin},testStrioInhibLine);
 
             [~,~,matExcitementSlice,~] = excitationOrInhibition(testmatxb,allMatBins{currentBin},testMatExcitLine);
-            [~,~,strioExcitementSlice,~] = excitationOrInhibition(teststrioxb,allStrioBins{currentBin},testStrioExcitLine);
+            [~,~,strioExcitementSlice,~,strio_exc_min] = excitationOrInhibition(teststrioxb,allStrioBins{currentBin},testStrioExcitLine);
 
 %             disp("Strio E and I")
 %             disp([size(strioExcitementSlice),size(strioInhibitionSlice)])
@@ -189,11 +191,26 @@ function [pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialC
 
             if sum(~isnan(strioInhibitionSlice)) / lengthOfStrioSlice > sum(~isnan(strioExcitementSlice)) / lengthOfStrioSlice && abs((sum(~isnan(strioInhibitionSlice)) / lengthOfStrioSlice) - (sum(~isnan(strioExcitementSlice)) / lengthOfStrioSlice)) > 0.1
                 strioStatus = "inhibited";
+                if ~foundFirstWindowWherePatternsStart
+                    foundFirstWindowWherePatternsStart = true;
+                    array_of_firsts = [array_of_firsts;strio_inh_min];
+                end
+
             elseif sum(~isnan(strioInhibitionSlice)) / lengthOfStrioSlice < sum(~isnan(strioExcitementSlice)) / lengthOfStrioSlice && abs((sum(~isnan(strioInhibitionSlice)) / lengthOfStrioSlice) - (sum(~isnan(strioExcitementSlice)) / lengthOfStrioSlice)) > 0.1
                 strioStatus = "excited";
+                if ~foundFirstWindowWherePatternsStart
+                    foundFirstWindowWherePatternsStart = true;
+                    disp("strioInhibitionSlice")
+                    disp(strioInhibitionSlice)
+                    disp(strioInhibitionSlice(find(~isnan(strioInhibitionSlice), 1, 'first')))
+                    array_of_firsts = [array_of_firsts;strio_inh_min];
+                    
+                end
             else
                 strioStatus = "neither";
             end
+
+
             if sum(~isnan(matInhibitionSlice)) / lengthOfMatSlice > sum(~isnan(matExcitementSlice)) / lengthOfMatSlice && abs((sum(~isnan(matInhibitionSlice)) / lengthOfMatSlice) - (sum(~isnan(matExcitementSlice)) / lengthOfMatSlice)) > 0.1
                 matStatus = "inhibited";
             elseif sum(~isnan(matInhibitionSlice)) / lengthOfMatSlice < sum(~isnan(matExcitementSlice)) / lengthOfMatSlice && abs((sum(~isnan(matInhibitionSlice)) / lengthOfMatSlice) - (sum(~isnan(matExcitementSlice)) / lengthOfMatSlice)) > 0.1
@@ -232,7 +249,7 @@ function [pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialC
         lateDecisionRange = (XB >= earlyDecisionBinUpperBound & XB < lateDecisionUpperBound);
         finalBinRange = (XB >= lateDecisionUpperBound & XB <= remainingBinUpperBound);
     end
-    function [minIndex,maxIndex,inhibitionSlice,copyOfXB] = excitationOrInhibition(XB,condition,inhibitionLine)
+    function [minIndex,maxIndex,inhibitionSlice,copyOfXB,min] = excitationOrInhibition(XB,condition,inhibitionLine)
         copyOfXB = XB;
         copyOfXB(~logical(condition)) = NaN;
         copyOfXB = copyOfXB(~isnan(copyOfXB));
@@ -240,6 +257,7 @@ function [pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialC
             minIndex=0;
             maxIndex=0;
             inhibitionSlice = [];
+            min = nan;
         else
             [min,max] = bounds(copyOfXB);
             minIndex = find(min==XB,1);
@@ -250,6 +268,8 @@ function [pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialC
             inhibitionSlice = inhibitionLine(minIndex:maxIndex);
         end
     end
+
+array_of_firsts = [];
 
 pairedLongTrialCounter = {{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0}};
 pairedShortTrialCounter = {{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0}};
@@ -415,7 +435,7 @@ for currentTrial=1:length(neuron_1_spikes)
     %hold off;
 
 %     disp(strcat("Trial Number: ",string(currentTrial)))
-    [eeCounterNew,eiCounterNew,ieCounterNew,iiCounterNew,nCounterNew] = countPatterns(strioxb,all_neuron_1_spikes,strioAboveThreshold,strioBelowThreshold,xb,all_neuron_2_spikes,matrixAboveThreshold,matBelowThreshold,...
+    [eeCounterNew,eiCounterNew,ieCounterNew,iiCounterNew,nCounterNew,array_of_firsts_new] = countPatterns(strioxb,all_neuron_1_spikes,strioAboveThreshold,strioBelowThreshold,xb,all_neuron_2_spikes,matrixAboveThreshold,matBelowThreshold,...
         longBaselineLowerBound,longBaselineUpperBound,immediateBaselineUpperBound,earlyDecisionBinUpperBound,neuron_1_lateDecisionUpperBound,remainingBin);
 
 %     [eeCounterNew,eiCounterNew,ieCounterNew,iiCounterNew] = countPatterns2(strioInhibitionLine,matrixInhibitionLine);
@@ -426,6 +446,7 @@ for currentTrial=1:length(neuron_1_spikes)
     ieCounter = ieCounter+ieCounterNew;
     iiCounter = iiCounter+iiCounterNew;
     nCounter = nCounter + nCounterNew;
+    array_of_firsts = [array_of_firsts,array_of_firsts_new];
 
 
 % pairedLongTrialCounter = {{0,0,0,0},{0,0,0,0},{0,0,0,0}};

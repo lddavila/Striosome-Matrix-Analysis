@@ -2,7 +2,7 @@
 [dbs,twdbs] = loadData;
 %% test
 namesOfDatabases = ["Control","Stress1","Stress2"];
-for currentDB = 1:length(twdbs) %cycle through the databases (AKA the Outer Loop in future comments)
+for currentDB = 1:1.5%length(twdbs) %cycle through the databases (AKA the Outer Loop in future comments)
     currentDatabase = twdbs{currentDB}; %get the database
     t = struct2table(currentDatabase); %turn it into a table for reading
     uniqueTaskType = unique(t.taskType); %get the unique task types within the current database
@@ -249,21 +249,21 @@ for currentDB = 1:length(twdbs) %cycle through the databases (AKA the Outer Loop
             unpairedNumberOfLongTrials(strcat("Task Type",string(currentTaskType)," Concentration ", num2str(concentrationsForCurrentTaskType(concCounter)))) = unpairedShortAndLongCount{currentDatabase}{2};
 
             %the code below is just used to create, and format the bar chart of pattern counts for long trials
-            bar(lcounts)
-            text(1:length(lcounts(:,1).'),lcounts(:,1).',num2str(round(lcounts(:,1),2)),'vert','bottom','horiz','right')
-            text(1:length(lcounts(:,2).'),lcounts(:,2).',num2str(round(lcounts(:,2),2)),'vert','bottom','horiz','left')
-            xticklabels(categories)
-            title(strcat(namesOfDatabases(currentDB)," Database Pattern Counts Long Trials, paired by Granger Causality"))
-            subtitle(strcat("Task Type ", string(currentTaskType)))
-            legend("Paired","Unpaired")
-            ylim([0,5.5])
-            name = strcat(namesOfDatabases(currentDB)," Long Trial Pattern Counts Task Type ",string(currentTaskType),".fig");
-%             saveas(gcf,name);
-            hold off
-            close all
+%             bar(lcounts)
+%             text(1:length(lcounts(:,1).'),lcounts(:,1).',num2str(round(lcounts(:,1),2)),'vert','bottom','horiz','right')
+%             text(1:length(lcounts(:,2).'),lcounts(:,2).',num2str(round(lcounts(:,2),2)),'vert','bottom','horiz','left')
+%             xticklabels(categories)
+%             title(strcat(namesOfDatabases(currentDB)," Database Pattern Counts Long Trials, paired by Granger Causality"))
+%             subtitle(strcat("Task Type ", string(currentTaskType)))
+%             legend("Paired","Unpaired")
+%             ylim([0,5.5])
+%             name = strcat(namesOfDatabases(currentDB)," Long Trial Pattern Counts Task Type ",string(currentTaskType),".fig");
+% %             saveas(gcf,name);
+%             hold off
+%             close all
 
-            figure
-            hold on
+%             figure
+%             hold on
             %scounts is same as lcounts, but for short trials
             scounts = [pairedShortTrialCounter{currentDatabase}{1},unpairedShortTrialCounter{currentDatabase}{1};...
                 pairedShortTrialCounter{currentDatabase}{2},unpairedShortTrialCounter{currentDatabase}{2};...
@@ -289,22 +289,22 @@ for currentDB = 1:length(twdbs) %cycle through the databases (AKA the Outer Loop
 
 
             %the code below is used to create, format, save, and close the bar chart of short trial pattern counts
-            bar(scounts)
-            text(1:length(scounts(:,1).'),scounts(:,1).',num2str(round(scounts(:,1),2)),'vert','bottom','horiz','right')
-            text(1:length(scounts(:,2).'),scounts(:,2).',num2str(round(scounts(:,2),2)),'vert','bottom','horiz','left')
-            xticklabels(categories)
-            title(strcat(namesOfDatabases(currentDB)," Database Pattern Counts Short Trials, paired by Granger Causality"))
-            subtitle(strcat("Task Type ", string(currentTaskType)," Concentration ", num2str(concentrationsForCurrentTaskType(concCounter))))
-            legend("Paired","Unpaired")
-
-            ylim([0,5.5])
-
-            name = strcat(namesOfDatabases(currentDB),"Short Trial Pattern Counts Task Type ",string(currentTaskType)," Concentration ", num2str(concentrationsForCurrentTaskType(concCounter)),".fig");
-
-            %         disp(name)
-%             saveas(gcf,name)
-            hold off
-            close all
+%             bar(scounts)
+%             text(1:length(scounts(:,1).'),scounts(:,1).',num2str(round(scounts(:,1),2)),'vert','bottom','horiz','right')
+%             text(1:length(scounts(:,2).'),scounts(:,2).',num2str(round(scounts(:,2),2)),'vert','bottom','horiz','left')
+%             xticklabels(categories)
+%             title(strcat(namesOfDatabases(currentDB)," Database Pattern Counts Short Trials, paired by Granger Causality"))
+%             subtitle(strcat("Task Type ", string(currentTaskType)," Concentration ", num2str(concentrationsForCurrentTaskType(concCounter))))
+%             legend("Paired","Unpaired")
+% 
+%             ylim([0,5.5])
+% 
+%             name = strcat(namesOfDatabases(currentDB),"Short Trial Pattern Counts Task Type ",string(currentTaskType)," Concentration ", num2str(concentrationsForCurrentTaskType(concCounter)),".fig");
+% 
+%             %         disp(name)
+% %             saveas(gcf,name)
+%             hold off
+%             close all
         end
     end
 
