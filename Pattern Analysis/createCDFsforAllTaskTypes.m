@@ -7,7 +7,7 @@ allTaskTypesAndConcentrationsPairedWith90thPercentiles = containers.Map('KeyType
 figure; hold on;
 string_that_will_be_used_for_legend = [];
 for i=1:3.5%length(twdbs)
-    if i==2
+    if i==3
         continue;
     else 
         
@@ -207,7 +207,8 @@ for i=1:1.5%length(twdbs)
 end
 
 %% Create histplots, but create 1 plot for each concentration and task type
-for i=1:1.5%length(twdbs)
+databases = ["baseline ","stress 1","stress 2"];
+for i=1:2%length(twdbs)
     currentDatabase = twdbs{i};
     t = struct2table(currentDatabase);
     uniqueTaskType = unique(t.taskType);
@@ -257,11 +258,11 @@ for i=1:1.5%length(twdbs)
             end
             %             disp(allCol6InModifedTable)
             if ~isempty(allCol6InModifedTable)
-                histogram(abs(log(allCol6InModifedTable)),100,'FaceAlpha',0.1)
-                xlim([0,7])
+                histogram(allCol6InModifedTable,100,'FaceAlpha',0.1)
+                % xlim([0,7])
             end
             legend(string(currentTaskTypes(currentTaskType)))
-            title(strcat(string(currentTaskTypes(currentTaskType))))
+            title(strcat(databases(i)," ",string(currentTaskTypes(currentTaskType))))
             hold off
         end
 

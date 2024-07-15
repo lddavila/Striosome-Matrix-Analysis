@@ -50,7 +50,7 @@ if class(twdbs)=="cell"
     all_strio_ids = cell(1,length(twdbs));
     all_matrix_ids = cell(1,length(twdbs));
 
-    homeDir = cd("../../../Extracting Data From TWDB");
+    homeDir = cd("C:\Users\ldd77\OneDrive\Documents\Striosome-Matrix-Analysis\Extracting Data From TWDB");
     % Branch based on the task type
     for db = 1:length(twdbs)
         %% For Striosomes

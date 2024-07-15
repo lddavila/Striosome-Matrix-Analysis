@@ -1,5 +1,5 @@
 function [sessionDirs,sessionDir_neurons] =findAllSessions(twdbs,dbs)
-cd("..\..\..\Extracting Data From TWDB");
+cd("C:\Users\ldd77\OneDrive\Documents\Striosome-Matrix-Analysis\Extracting Data From TWDB");
 sessionDirs = cell(1,length(dbs));
 sessionDir_neurons = cell(1,length(dbs)); % Neurons #s for each session
 for db = 1:length(dbs)
