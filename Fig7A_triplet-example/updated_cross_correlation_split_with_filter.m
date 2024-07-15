@@ -139,11 +139,11 @@ for currentDB = 1:1.5%length(twdbs) %cycle through the databases (AKA the Outer 
                     mkdir("Negative Slope")
                     if slope>0
                         cd("Positive Slope");
-                        saveas(given_fig,thename)
+                        % saveas(given_fig,thename)
                         cd(path_of_task_type_folder)
                     elseif slope<0
                         cd("Negative Slope");
-                        saveas(given_fig,thename)
+                        % saveas(given_fig,thename)
                         cd(path_of_task_type_folder)
                     end
                     cd(path_of_task_type_folder)
@@ -151,11 +151,11 @@ for currentDB = 1:1.5%length(twdbs) %cycle through the databases (AKA the Outer 
                     cd(path_of_task_type_folder)
                     if slope>0
                         cd("Positive Slope");
-                        saveas(given_fig,thename)
+                        % saveas(given_fig,thename)
                         cd(path_of_task_type_folder)
                     elseif slope<0
                         cd("Negative Slope");
-                        saveas(given_fig,thename)
+                        % saveas(given_fig,thename)
                         cd(path_of_task_type_folder)
                     end
                     cd(path_of_task_type_folder)

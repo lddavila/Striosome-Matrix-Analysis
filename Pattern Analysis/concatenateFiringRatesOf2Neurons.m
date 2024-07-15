@@ -11,14 +11,7 @@ for spike_idx = 1: min([length(spikes_neuron_1),length(spikes_neuron_2)])
     all_neuron2_times = [all_neuron2_times s2{1}.'];
 end
 
-%% 
-% figure
-% histogram(all_neuron2_times,400)
-% title("Neuron 2 Counts")
-% 
-% figure
-% histogram(all_neuron1_times,400)
-% title("Neuron 1 Counts")
+
 
 
 % scatter(xmean_matrix,ynew_matrix)

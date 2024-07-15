@@ -5,7 +5,7 @@
 binSize = 100;
 allTaskTypesAndConcentrationsPairedWithSkewness = containers.Map('KeyType','char','ValueType','any');
 namesOfDatabases = ["Control", "Stress 1","Stress 2"];
-for i=3:3.5%length(twdbs)
+for i=1:1.5%length(twdbs)
     currentDatabase = twdbs{i};
     t = struct2table(currentDatabase);
     uniqueTaskType = unique(t.taskType);

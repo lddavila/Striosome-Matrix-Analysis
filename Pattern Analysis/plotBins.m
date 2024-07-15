@@ -200,9 +200,9 @@ function [pairedLongTrialCounter,pairedShortTrialCounter,pairedWeirdlyLongTrialC
                 strioStatus = "excited";
                 if ~foundFirstWindowWherePatternsStart
                     foundFirstWindowWherePatternsStart = true;
-                    disp("strioInhibitionSlice")
-                    disp(strioInhibitionSlice)
-                    disp(strioInhibitionSlice(find(~isnan(strioInhibitionSlice), 1, 'first')))
+                    % disp("strioInhibitionSlice")
+                    % disp(strioInhibitionSlice)
+                    % disp(strioInhibitionSlice(find(~isnan(strioInhibitionSlice), 1, 'first')))
                     array_of_firsts = [array_of_firsts;strio_inh_min];
                     
                 end

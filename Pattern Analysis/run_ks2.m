@@ -75,18 +75,20 @@ table_of_TTD = table(string(keys(allTaskTypesAndDatabasePairedWithArrayOfTTD).')
     values(allTaskTypesAndDatabasePairedWithArrayOfTTD).',...
     'VariableNames',{'Task Type and Database','Array_of_TTD'});
 
+table_of_TTD{5,1} = "stress1 Task Type CB stress1";
+table_of_TTD{6,1} = "stress1 Task Type TR stress1";
 disp(table_of_TTD)
 
 %% run ks test of control CB vs all other control TT
 clc
 table_of_only_control = table_of_TTD(contains(table_of_TTD.("Task Type and Database"),'control'),:);
-disp(table_of_only_control)
+% disp(table_of_only_control)
 cb_ttd_array = cell2mat(table_of_only_control{1,2});
 % disp(cb_ttd_array(1:100).')
 
 for i=2:height(table_of_only_control)
-    [h,p] =kstest2(cb_ttd_array,cell2mat(table_of_only_control{i,2}));
-    disp(p)
+    [h,p] =kstest2(cb_ttd_array,cell2mat(table_of_only_control{i,2}),'Alpha',0.0000001);
+    % disp(p)
     disp(strcat(table_of_only_control{1,1}, " Compared To ", table_of_only_control{i,1}));
     disp(strcat("h: ",num2str(h), "p: ", num2str(p)))
 end
@@ -94,10 +96,13 @@ end
 %% run ks test of control CB vs Stress TT
 table_of_only_stress_1 = table_of_TTD(contains(table_of_TTD.("Task Type and Database"),'stress1'),:);
 for i=1:height(table_of_only_stress_1)
-    [h,p] =kstest2(cb_ttd_array,cell2mat(table_of_only_stress_1{i,2}));
+    [h,p] =kstest2(abs(log(cb_ttd_array)),abs(log(cell2mat(table_of_only_stress_1{i,2}))));
     disp(strcat(table_of_only_control{1,1}, " Compared To ", table_of_only_stress_1{i,1}));
     disp(strcat("h: ",num2str(h), " p: ", num2str(p)))
 end
+
+%% create a histogram of CB control
+histogram(abs(log(table_of_only_control{1,2}{1})))
 
 %% run ks test of control TR vs all other Control TT
 tr_ttd_array = cell2mat(table_of_only_control{4,2});

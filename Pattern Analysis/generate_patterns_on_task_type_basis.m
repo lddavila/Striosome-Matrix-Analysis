@@ -2,7 +2,7 @@
 [dbs,twdbs] = loadData;
 %% test
 namesOfDatabases = ["Control","Stress1","Stress2"];
-for currentDB = 1:length(twdbs)
+for currentDB = 1:1.5%length(twdbs)
     currentDatabase = twdbs{currentDB};
     t = struct2table(currentDatabase);
     uniqueTaskType = unique(t.taskType);
@@ -60,7 +60,7 @@ for currentDB = 1:length(twdbs)
 %         end
         % display(cb_strio_ids)
         cd("C:\Users\ldd77\OneDrive\Desktop\Striosome-Matrix-Analysis\Pattern Analysis")
-        [neuron_1_ids,neuron_2_ids] = findSpecifiedNeuronsInDatabases(dbs,sessionDir_neurons,cb_matrix_ids,cb_matrix_ids);  %%IMPORTANT
+        [neuron_1_ids,neuron_2_ids] = findSpecifiedNeuronsInDatabases(dbs,sessionDir_neurons,cb_matrix_ids,cb_strio_ids);  %%IMPORTANT
                                                                                                                           %%LINE 62 tells you what specifically you are looking for
                                                                                                                           % by changing what ids you are putting in you change what pairs you are looking at
                                                                                                                           %the original line is the following

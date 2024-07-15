@@ -76,27 +76,27 @@ for currentDB = 1:1.5%length(twdbs) %cycle through the databases (AKA the Outer 
         %striosome matrix pair a nx2 array where column 1 is the index of a matrix neuron and column 2 is the index of a striosome neuron
 
 
-        %now we'll filter the strio-matrix pairs to see if they have the same rat id and date
-        %if they match they're left in if they don't match then they're taken out
-        for currentRow=1:height(currentDatabasePairs)
-            strio_info = currentDatabase(currentDatabasePairs(currentRow,2)); %the row in the current database which contains the striosome
-            strio_rat = strio_info.ratID; %the rat which the info was recorded from 
-            strio_sessionID = strio_info.sessionID; %date the info was recorded
-
-
-            mat_info = currentDatabase(currentDatabasePairs(currentRow,1)); %the row in the current Database which contains the matrix
-            mat_rat = mat_info.ratID;
-            mat_sessionID = mat_info.sessionID;
-
-            %remove the pair if the both SessionID and ratID don't match
-            if ~(strcmp(mat_sessionID,strio_sessionID) && strcmp(mat_rat,strio_rat) )
-                currentDatabasePairs(currentRow,1) = nan;
-                currentDatabasePairs(currentRow,2) = nan;
-            end
-           
-        end
-        disp("This is how nans there are ")
-        disp(sum(isnan(currentDatabasePairs),'all'))
+        % %now we'll filter the strio-matrix pairs to see if they have the same rat id and date
+        % %if they match they're left in if they don't match then they're taken out
+        % for currentRow=1:height(currentDatabasePairs)
+        %     strio_info = currentDatabase(currentDatabasePairs(currentRow,2)); %the row in the current database which contains the striosome
+        %     strio_rat = strio_info.ratID; %the rat which the info was recorded from 
+        %     strio_sessionID = strio_info.sessionID; %date the info was recorded
+        % 
+        % 
+        %     mat_info = currentDatabase(currentDatabasePairs(currentRow,1)); %the row in the current Database which contains the matrix
+        %     mat_rat = mat_info.ratID;
+        %     mat_sessionID = mat_info.sessionID;
+        % 
+        %     %remove the pair if the both SessionID and ratID don't match
+        %     if ~(strcmp(mat_sessionID,strio_sessionID) && strcmp(mat_rat,strio_rat) )
+        %         currentDatabasePairs(currentRow,1) = nan;
+        %         currentDatabasePairs(currentRow,2) = nan;
+        %     end
+        % 
+        % end
+        % disp("This is how nans there are ")
+        % disp(sum(isnan(currentDatabasePairs),'all'))
 
 
         %check connection via granger causality
@@ -135,12 +135,20 @@ for currentDB = 1:1.5%length(twdbs) %cycle through the databases (AKA the Outer 
     %hard coded solution to avoid /0 errors for rev cb
     array_of_total_pairs_per_task_type(3) = 1;
 
+    % lines 138 to 142 are the original lines 
     table_of_paired_percentages = table(uniqueTaskType,...
         array_of_total_pairs_per_task_type.',...
         array_of_total_pairs_connected_via_gc.' ./ array_of_total_pairs_per_task_type.',...
         'VariableNames',{'TT and Conc','Possible Pairs', '% of connected pairs according to Granger Causality'});
 
+    %lines 145-148 have been altered so that the table prints the number of connected pairs instead of the percentage
+     table_of_paired = table(uniqueTaskType,...
+        array_of_total_pairs_per_task_type.',...
+        array_of_total_pairs_connected_via_gc.' ,...
+        'VariableNames',{'TT and Conc','Possible Pairs', '# of connected pairs according to Granger Causality'});
+
     disp(table_of_paired_percentages);
+    disp(table_of_paired)
 
 
 end
